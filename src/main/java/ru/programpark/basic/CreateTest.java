@@ -11,36 +11,17 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
-
+import static ru.programpark.dao.ArrayInfo.*;
 /**
  * Created by user on 4/3/2016.
  */
 @State(Scope.Thread)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
+@Fork(1)
+@Warmup(iterations = 4)
+@Measurement(iterations = 4)
 public class CreateTest {
 
-    private static final ArrayInfo STATE_INFO;
-    private static final ArrayInfo DATA_INFO;
-
-    static {
-        STATE_INFO = new ArrayInfo();
-        STATE_INFO.addObjectField("type");
-        DATA_INFO = new ArrayInfo();
-        for (int i = 1; i <= 8; i++) {
-            DATA_INFO.addNumberField("f"+i);
-        }
-        for (int i = 9; i <= 10; i++) {
-            DATA_INFO.addObjectField("f" + i);
-        }
-        DATA_INFO.addObjectField("type");
-
-//        System.out.println("STATE_INFO = " + STATE_INFO);
-//        System.out.println("DATA_INFO = " + DATA_INFO);
-    }
-
-    public void setup(){
-
-    }
     @Benchmark
     public void createTypeFieldObj(Blackhole bh){
         bh.consume(new FieldObject(Type.FIN));

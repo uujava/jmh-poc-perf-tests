@@ -8,7 +8,8 @@ import java.util.Map;
  * Created by kozyr on 04.04.2016.
  */
 public class ArrayInfo {
-
+    public final static ArrayInfo STATE_INFO;
+    public final static ArrayInfo DATA_INFO;
     private int maxDouble = 0;
     private int maxObject = 0;
 
@@ -42,5 +43,21 @@ public class ArrayInfo {
                 ", maxObject=" + maxObject +
                 ", idx=" + idx +
                 '}';
+    }
+
+    static {
+        STATE_INFO = new ArrayInfo();
+        STATE_INFO.addObjectField("type");
+        DATA_INFO = new ArrayInfo();
+        for (int i = 1; i <= 8; i++) {
+            DATA_INFO.addNumberField("f"+i);
+        }
+        for (int i = 9; i <= 10; i++) {
+            DATA_INFO.addObjectField("f" + i);
+        }
+        DATA_INFO.addObjectField("type");
+
+//        System.out.println("STATE_INFO = " + STATE_INFO);
+//        System.out.println("DATA_INFO = " + DATA_INFO);
     }
 }
