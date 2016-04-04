@@ -10,7 +10,9 @@ SYNOPSIS
 -----------------
 
     mvn clean package
-    java -jar target\benchmark.jar
+    java -jar target\benchmarks.jar -bm thrpt,sample -f 1 -i 4 -tu us -wi 3
+    or
+    java -jar target\benchmarks.jar -h
 
 REQUIREMENTS
 -----------------
