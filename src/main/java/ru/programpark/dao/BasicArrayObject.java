@@ -1,4 +1,4 @@
-package BenchmarksProject.ringbuffer;
+package ru.programpark.dao;
 
 /**
  * Created by user on 4/2/2016.

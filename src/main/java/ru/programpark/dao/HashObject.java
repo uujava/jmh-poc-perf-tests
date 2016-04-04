@@ -1,4 +1,4 @@
-package BenchmarksProject.ringbuffer;
+package ru.programpark.dao;
 
 import java.util.Map;
 

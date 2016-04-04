@@ -1,4 +1,4 @@
-package BenchmarksProject.ringbuffer;
+package ru.programpark.dao;
 
 /**
  * Created by user on 4/3/2016.
@@ -20,24 +20,24 @@ public class ResultSet {
     int index = 0;
     int count = 0;
 
-    boolean next(){
+    public boolean next(){
         index++;
         return true;
     }
 
-    double getDouble(String s){
+    public double getDouble(String s){
         return numeric[index%count];
     }
 
-    long getLong(String s){
+    public long getLong(String s){
         return (long) numeric[index%count];
     }
 
-    int getInt(String s){
+    public int getInt(String s){
         return (int) numeric[index%count];
     }
 
-    String getString(String s){
+    public String getString(String s){
         return strings[index%count];
     }
 

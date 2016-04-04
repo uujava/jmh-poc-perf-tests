@@ -1,8 +1,8 @@
-package BenchmarksProject.ringbuffer;
+package ru.programpark.dao;
 
 /**
  * Created by user on 4/3/2016.
  */
-enum Type {
+public enum Type {
     DATA, FIN, START
 }
