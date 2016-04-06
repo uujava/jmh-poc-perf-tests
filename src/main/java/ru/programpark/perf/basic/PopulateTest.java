@@ -1,6 +1,6 @@
-package ru.programpark.basic;
+package ru.programpark.perf.basic;
 
-import ru.programpark.dao.*;
+import ru.programpark.perf.dao.*;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
@@ -12,7 +12,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
-import static ru.programpark.dao.ArrayInfo.*;
+import static ru.programpark.perf.dao.ArrayInfo.*;
 
 /**
  * Created by user on 4/3/2016.
@@ -21,7 +21,7 @@ import static ru.programpark.dao.ArrayInfo.*;
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @Fork(1)
 @Warmup(iterations = 4)
-@Measurement(iterations = 4)
+@Measurement(iterations = 4,time = 2, timeUnit = TimeUnit.SECONDS)
 public class PopulateTest {
 
     private ResultSet resultSet;
@@ -47,37 +47,36 @@ public class PopulateTest {
     }
 
     @Benchmark
+    public void getDouble(Blackhole bh){
+        resultSet.next();
+        bh.consume(resultSet.getDouble("f1"));
+    }
+
+    @Benchmark
+    public void getString(Blackhole bh){
+        resultSet.next();
+        bh.consume(resultSet.getString("f1"));
+    }
+
+    @Benchmark
+    public void getLong(Blackhole bh){
+        resultSet.next();
+        bh.consume(resultSet.getLong("f1"));
+    }
+
+    @Benchmark
     public void populateFieldObj(Blackhole bh){
         FieldObject obj = new FieldObject(Type.DATA);
         resultSet.next();
-        obj.set("f1", resultSet.getDouble("f1"));
-        obj.set("f2", resultSet.getDouble("f2"));
-        obj.set("f3", resultSet.getLong("f3"));
-        obj.set("f4",resultSet.getLong("f4"));
-        obj.set("f5",resultSet.getInt("f5"));
-        obj.set("f6",resultSet.getInt("f6"));
-        obj.set("f7",resultSet.getInt("f7"));
-        obj.set("f8",resultSet.getInt("f8"));
-        obj.set("f9",resultSet.getString("f9"));
-        obj.set("f10",resultSet.getString("f10"));
+        resultSet.fillObject(obj);
         bh.consume(obj);
-
     }
 
     @Benchmark
     public void populateFixedArrayObj(Blackhole bh){
         FixedArrayObject obj = new FixedArrayObject(Type.DATA);
         resultSet.next();
-        obj.set("f1", resultSet.getDouble("f1"));
-        obj.set("f2", resultSet.getDouble("f2"));
-        obj.set("f3", resultSet.getLong("f3"));
-        obj.set("f4", resultSet.getLong("f4"));
-        obj.set("f5", resultSet.getInt("f5"));
-        obj.set("f6", resultSet.getInt("f6"));
-        obj.set("f7", resultSet.getInt("f7"));
-        obj.set("f8", resultSet.getInt("f8"));
-        obj.set("f9", resultSet.getString("f9"));
-        obj.set("f10", resultSet.getString("f10"));
+        resultSet.fillObject(obj);
         bh.consume(obj);
     }
 
@@ -85,33 +84,15 @@ public class PopulateTest {
     public void populateBasicArrayObj(Blackhole bh){
         BasicArrayObject obj = new BasicArrayObject(Type.DATA, DATA_INFO);
         resultSet.next();
-        obj.set("f1", resultSet.getDouble("f1"));
-        obj.set("f2", resultSet.getDouble("f2"));
-        obj.set("f3", resultSet.getLong("f3"));
-        obj.set("f4",resultSet.getLong("f4"));
-        obj.set("f5",resultSet.getInt("f5"));
-        obj.set("f6",resultSet.getInt("f6"));
-        obj.set("f7",resultSet.getInt("f7"));
-        obj.set("f8",resultSet.getInt("f8"));
-        obj.set("f9",resultSet.getString("f9"));
-        obj.set("f10",resultSet.getString("f10"));
+        resultSet.fillObject(obj);
         bh.consume(obj);
     }
 
     @Benchmark
     public void populateHashObj(Blackhole bh){
-        HashObject obj = new HashObject(new HashMap<String, Object>(10));
+        HashObject obj = new HashObject(new HashMap<>(10));
         resultSet.next();
-        obj.set("f1", resultSet.getDouble("f1"));
-        obj.set("f2", resultSet.getDouble("f2"));
-        obj.set("f3", resultSet.getLong("f3"));
-        obj.set("f4",resultSet.getLong("f4"));
-        obj.set("f5",resultSet.getInt("f5"));
-        obj.set("f6",resultSet.getInt("f6"));
-        obj.set("f7",resultSet.getInt("f7"));
-        obj.set("f8",resultSet.getInt("f8"));
-        obj.set("f9",resultSet.getString("f9"));
-        obj.set("f10",resultSet.getString("f10"));
+        resultSet.fillObject(obj);
         bh.consume(obj);
     }
 

@@ -1,4 +1,4 @@
-package ru.programpark.dao;
+package ru.programpark.perf.dao;
 
 /**
  * Created by user on 4/2/2016.
@@ -18,22 +18,45 @@ public class BasicArrayObject implements TestObject {
 
     @Override
     public void set(String idx, long v) {
-        numeric[idx(idx)] = v;
+        int _idx = idx(idx);
+        if (_idx < numeric.length) {
+            numeric[_idx] = v;
+        } else {
+            objects[_idx] = v;
+        }
+
     }
 
     @Override
     public void set(String idx, int v) {
-        numeric[idx(idx)] = v;
+        int _idx = idx(idx);
+        if (_idx < numeric.length) {
+            numeric[_idx] = v;
+        } else {
+            objects[_idx] = v;
+        }
+
     }
 
     @Override
     public void set(String idx, double v) {
-        numeric[idx(idx)] = v;
+        int _idx = idx(idx);
+        if (_idx < numeric.length) {
+            numeric[_idx] = v;
+        } else {
+            objects[_idx] = v;
+        }
     }
 
     @Override
     public void set(String idx, float v) {
-        numeric[idx(idx)] = v;
+        int _idx = idx(idx);
+        if (_idx < numeric.length) {
+            numeric[_idx] = v;
+        } else {
+            objects[_idx] = v;
+        }
+
     }
 
     @Override
@@ -54,7 +77,7 @@ public class BasicArrayObject implements TestObject {
 
     @Override
     public long getLong(String idx) {
-        return (long) numeric[idx(idx)];
+        return ((Number) getObject(idx)).longValue();
     }
 
     protected int idx(String idx) {
@@ -63,7 +86,7 @@ public class BasicArrayObject implements TestObject {
 
     @Override
     public double getDouble(String idx) {
-        return numeric[idx(idx)];
+        return ((Number) getObject(idx)).doubleValue();
     }
 
     @Override

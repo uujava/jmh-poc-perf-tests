@@ -1,4 +1,4 @@
-package ru.programpark.dao;
+package ru.programpark.perf.dao;
 
 
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import java.util.Map;
 public class ArrayInfo {
     public final static ArrayInfo STATE_INFO;
     public final static ArrayInfo DATA_INFO;
+    public final static ArrayInfo OBJECT_DATA_INFO;
     private int maxDouble = 0;
     private int maxObject = 0;
 
@@ -57,7 +58,11 @@ public class ArrayInfo {
         }
         DATA_INFO.addObjectField("type");
 
-//        System.out.println("STATE_INFO = " + STATE_INFO);
-//        System.out.println("DATA_INFO = " + DATA_INFO);
+        OBJECT_DATA_INFO = new ArrayInfo();
+        for (int i = 1; i <= 10; i++) {
+            OBJECT_DATA_INFO.addObjectField("f" + i);
+        }
+        OBJECT_DATA_INFO.addObjectField("type");
+
     }
 }

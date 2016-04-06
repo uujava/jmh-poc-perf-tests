@@ -1,4 +1,4 @@
-package ru.programpark.dao;
+package ru.programpark.perf.dao;
 
 /**
  * Created by user on 4/2/2016.
@@ -42,7 +42,7 @@ public class FixedArrayObject implements TestObject {
 
     @Override
     public void set(String idx, Object v){
-        objects[idx(idx)] = v;
+        objects[idx(idx)-numeric.length] = v;
     }
 
     @Override
@@ -61,25 +61,25 @@ public class FixedArrayObject implements TestObject {
     }
 
     protected int idx(String idx) {
-        if (idx.equals("f1")) {
+        if (idx == "f1") {
             return 0;
-        } else if (idx.equals("f2")) {
+        } else if (idx  == "f2") {
             return 1;
-        } else if (idx.equals("f3")) {
+        } else if (idx  == "f3") {
             return 2;
-        } else if (idx.equals("f4")) {
+        } else if (idx  == "f4") {
             return 3;
-        } else if (idx.equals("f5")) {
+        } else if (idx == "f5") {
             return 4;
-        } else if (idx.equals("f6")) {
+        } else if (idx  == "f6") {
             return 5;
-        } else if (idx.equals("f7")) {
+        } else if (idx  == "f7") {
             return 6;
-        } else if (idx.equals("f8")) {
+        } else if (idx  == "f8") {
             return 7;
-        } else if (idx.equals("f9")) {
+        } else if (idx  == "f9") {
             return 8;
-        } else if (idx.equals("f10")) {
+        } else if (idx  == "f10") {
             return 9;
         } else {
             throw new ArrayIndexOutOfBoundsException(idx);

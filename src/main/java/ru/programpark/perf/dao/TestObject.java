@@ -1,4 +1,4 @@
-package ru.programpark.dao;
+package ru.programpark.perf.dao;
 
 /**
  * Created by user on 4/3/2016.

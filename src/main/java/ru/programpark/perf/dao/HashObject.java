@@ -1,4 +1,4 @@
-package ru.programpark.dao;
+package ru.programpark.perf.dao;
 
 import java.util.Map;
 

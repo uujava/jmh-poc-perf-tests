@@ -1,6 +1,6 @@
-package ru.programpark.basic;
+package ru.programpark.perf.basic;
 
-import ru.programpark.dao.*;
+import ru.programpark.perf.dao.*;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.profile.GCProfiler;
@@ -11,7 +11,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
-import static ru.programpark.dao.ArrayInfo.*;
+import static ru.programpark.perf.dao.ArrayInfo.*;
 /**
  * Created by user on 4/3/2016.
  */
@@ -19,7 +19,7 @@ import static ru.programpark.dao.ArrayInfo.*;
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @Fork(1)
 @Warmup(iterations = 4)
-@Measurement(iterations = 4)
+@Measurement(iterations = 4,time = 2, timeUnit = TimeUnit.SECONDS)
 public class CreateTest {
 
     @Benchmark
