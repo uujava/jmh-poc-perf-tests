@@ -96,6 +96,26 @@ public class PopulateTest {
         bh.consume(obj);
     }
 
+    @Benchmark
+    public void populateViaFactory(Factory f, Blackhole bh){
+        TestObject obj = f.factory.newInstance();
+        resultSet.fillObjectNoString(obj);
+        bh.consume(obj);
+    }
+
+    @State(Scope.Thread)
+    public static class Factory{
+        @Param({"Field", "BasicArray", "FixedArray", "ObjectArray", "Hash"})
+        public String className;
+        public TestObjectFactory factory;
+
+        @Setup(Level.Iteration)
+        public void setup() {
+            factory = new TestObjectFactory(className);
+        }
+
+    }
+
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
                 .include(PopulateTest.class.getSimpleName())

@@ -1,11 +1,12 @@
 package ru.programpark.perf.dao;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Created by user on 4/3/2016.
  */
-public class HashObject implements TestObject{
+public class HashObject implements TestObject, Serializable {
     private final Type type;
     private final Map<String, Object> data;
     public HashObject(Type type) {

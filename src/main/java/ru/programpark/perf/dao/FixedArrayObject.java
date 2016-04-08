@@ -1,9 +1,11 @@
 package ru.programpark.perf.dao;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 4/2/2016.
  */
-public class FixedArrayObject implements TestObject {
+public class FixedArrayObject implements TestObject, Serializable {
 
     private final double[] numeric;
     private final Object[] objects;

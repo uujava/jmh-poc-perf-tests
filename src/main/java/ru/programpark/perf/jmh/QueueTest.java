@@ -1,4 +1,4 @@
-package ru.programpark.perf.queue;
+package ru.programpark.perf.jmh;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
@@ -29,12 +29,12 @@ public class QueueTest {
 
     @Param({"Field", "BasicArray", "FixedArray", "ObjectArray", "Hash"})
     String className;
-    private TestObjectFactory objectFactory;
+    private TestObjectFactory factory;
 
     @Setup
     public void setup() {
         resultSet = new ResultSet(1000000);
-        objectFactory = new TestObjectFactory(className);
+        factory = new TestObjectFactory(className);
         queue = new ArrayBlockingQueue<TestObject>(100000);
     }
 
@@ -43,7 +43,7 @@ public class QueueTest {
         resultSet.next();
         try {
             // To avoid locked producer
-            queue.put(objectFactory.newInstance());
+            queue.put(factory.newInstance());
         } catch (Exception ex) {
             //skip
         }
@@ -54,7 +54,7 @@ public class QueueTest {
     @Group("queue")
     @GroupThreads(1)
     public void produce(Blackhole bh) {
-        TestObject object = objectFactory.newInstance();
+        TestObject object = factory.newInstance();
         resultSet.next();
         resultSet.fillObject(object);
         try {
@@ -67,7 +67,7 @@ public class QueueTest {
     @Benchmark
     @Group("baseline")
     public void baseline(Blackhole bh) {
-        TestObject obj = objectFactory.newInstance();
+        TestObject obj = factory.newInstance();
         resultSet.next();
         resultSet.fillObject(obj);
         bh.consume(obj);

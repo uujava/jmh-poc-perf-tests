@@ -1,13 +1,15 @@
 package ru.programpark.perf.dao;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 4/2/2016.
  */
-public class BasicArrayObject implements TestObject {
+public class BasicArrayObject implements TestObject, Serializable {
 
     private final double[] numeric;
     private final Object[] objects;
-    private final ArrayInfo info;
+    private final transient ArrayInfo info;
 
     public BasicArrayObject(Type type, ArrayInfo info) {
         this.info = info;

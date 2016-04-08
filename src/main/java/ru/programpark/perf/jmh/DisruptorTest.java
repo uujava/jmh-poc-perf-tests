@@ -1,4 +1,4 @@
-package ru.programpark.perf.ring;
+package ru.programpark.perf.jmh;
 
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -35,39 +35,46 @@ public class DisruptorTest {
     String className;
     private Disruptor<TestObject> disruptor;
     private Consumer consumer;
-    private TestObjectFactory testObjectFactory;
+    private TestObjectFactory factory;
 
     @Setup(Level.Iteration)
     public void setup() {
         resultSet = new ResultSet(1000000);
         // Build a disruptor and start it.
-        testObjectFactory = new TestObjectFactory(className);
-        className = className.intern();
-        disruptor = new Disruptor<>(testObjectFactory, 1024 * 16, DaemonThreadFactory.INSTANCE, ProducerType.SINGLE, new SleepingWaitStrategy(2));
+        factory = new TestObjectFactory(className);
+        disruptor = new Disruptor<>(factory, 1024 * 128, DaemonThreadFactory.INSTANCE, ProducerType.SINGLE, new SleepingWaitStrategy());
         ring = disruptor.start();
         SequenceBarrier sequenceBarrier = ring.newBarrier();
         Sequence seq = new Sequence(SingleProducerSequencer.INITIAL_CURSOR_VALUE);
         ring.addGatingSequences(seq);
         consumer = new Consumer(sequenceBarrier, seq, ring);
+//        System.out.println("setup = " + ring.getCursor() + " gate:  " + ring.getMinimumGatingSequence());
     }
 
     @TearDown(Level.Iteration)
     public void teardown() {
-        long next = ring.next();
-        System.out.println("next = " + next + " cursor: " + ring.getCursor() + " gate:  " + ring.getMinimumGatingSequence());
-        consumer.alert();
-        ring.publish(next);
-        next = ring.next();
-        ring.publish(next);
-//        disruptor.halt();
-        disruptor = null;
-        ring = null;
+//        System.out.println("teardown cursor: " + ring.getCursor() + " gate:  " + ring.getMinimumGatingSequence() + " diff: " + (ring.getCursor() - ring.getMinimumGatingSequence()));
+        try {
+            long next = ring.tryNext();
+            consumer.alert();
+            ring.publish(next);
+            next = ring.tryNext();
+            ring.publish(next);
+        } catch(InsufficientCapacityException ex) {
+            System.out.println("ring is full at teardown: "  + ex);
+        } finally {
+//            System.out.println("halt disruptor: ");
+            disruptor.halt();
+//            System.out.println("done");
+            disruptor = null;
+            ring = null;
+        }
     }
 
     @Benchmark
     @Group("baseline")
     public void baseline(Blackhole bh) {
-        TestObject obj = testObjectFactory.newInstance();
+        TestObject obj = factory.newInstance();
         resultSet.next();
         resultSet.fillObject(obj);
         bh.consume(obj);
@@ -77,12 +84,19 @@ public class DisruptorTest {
     @Group("ring")
     @GroupThreads(1)
     public void produce(Blackhole bh, Control ctrl) {
-        if (ctrl.stopMeasurement) return;
-        long next = ring.next();
-        TestObject object = ring.get(next);
-        resultSet.next();
-        resultSet.fillObject(object);
-        ring.publish(next);
+        try {
+            long next = ring.tryNext();
+            TestObject object = ring.get(next);
+            resultSet.next();
+            resultSet.fillObject(object);
+            ring.publish(next);
+        }catch (InsufficientCapacityException ex){
+            try{
+              Thread.currentThread().sleep(10);
+            } catch (InterruptedException e) {
+              System.out.println("produce interrupted");
+            }
+        }
     }
 
     @Benchmark
@@ -103,9 +117,9 @@ public class DisruptorTest {
                 .warmupIterations(4)
                 .forks(1)
                 .mode(Mode.All)
-                .param("className", "Hash")
+                .param("className", "Field")
                 .exclude("baseline")
-                .jvmArgsAppend("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005")
+//                .jvmArgsAppend("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005")
                 .measurementIterations(4)
                 .build();
         new Runner(opt).run();

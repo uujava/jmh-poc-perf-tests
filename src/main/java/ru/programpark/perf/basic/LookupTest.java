@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @Fork(1)
 @Warmup(iterations = 4)
-@Measurement(iterations = 4, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 4, time = 10, timeUnit = TimeUnit.SECONDS)
 public class LookupTest {
 
     private String string1;
@@ -20,10 +20,15 @@ public class LookupTest {
 //    private IdentityHashMap<String, String> identityHashMap;
 //    private IdentityHashMap<Object, Object> hashMap;
 
-    @Setup(Level.Iteration)
+    @Setup(Level.Invocation)
     public void baseline() {
         string1 = Double.toHexString(Math.random()).intern();
-        string2 = new String(string1);
+        string2 = new String(string1.getBytes());
+        try {
+            Thread.currentThread().sleep(10);
+        } catch (InterruptedException e) {
+//            e.printStackTrace();
+        }
 //        identityHashMap = new IdentityHashMap<>();
 //        identityHashMap.put(string1, string1);
 //        hashMap = new IdentityHashMap<>();
@@ -32,7 +37,7 @@ public class LookupTest {
 
     @Benchmark
 //    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    @CompilerControl(CompilerControl.Mode.EXCLUDE)
+//    @CompilerControl(CompilerControl.Mode.EXCLUDE)
     public void stringEqualsNoJit(Blackhole bh) {
         bh.consume(string1.equals(string2));
     }
@@ -43,7 +48,7 @@ public class LookupTest {
     }
 
     @Benchmark
-    @CompilerControl(CompilerControl.Mode.EXCLUDE)
+//    @CompilerControl(CompilerControl.Mode.EXCLUDE)
     public void stringAreSameNoJit(Blackhole bh) {
         bh.consume(string1 == string2);
     }

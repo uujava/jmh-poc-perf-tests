@@ -10,7 +10,7 @@ public class TestObjectFactory implements com.lmax.disruptor.EventFactory<ru.pro
     private final String className;
 
     public TestObjectFactory(String className) {
-        this.className = className;
+        this.className = className.intern();
     }
 
     @Override

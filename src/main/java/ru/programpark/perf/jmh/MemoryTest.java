@@ -1,4 +1,4 @@
-package ru.programpark.perf.serial;
+package ru.programpark.perf.jmh;
 
 import org.openjdk.jol.info.GraphLayout;
 import org.openjdk.jol.util.VMSupport;

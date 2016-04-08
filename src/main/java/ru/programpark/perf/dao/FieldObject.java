@@ -1,9 +1,11 @@
 package ru.programpark.perf.dao;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 4/3/2016.
  */
-public class FieldObject implements TestObject {
+public class FieldObject implements TestObject, Serializable {
 
     private double f1;
     private double f2;
