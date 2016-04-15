@@ -1,5 +1,7 @@
 package ru.programpark.perf.dao;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -94,6 +96,27 @@ public class BasicArrayObject implements TestObject, Serializable {
     @Override
     public Type type() {
         return (Type) getObject("type");
+    }
+
+    @Override
+    public void writeSelf(DataOutputStream bos) {
+        try {
+            bos.write(numeric.length); // write numeric size first
+            for (int pos = 0; pos < numeric.length; pos++) {
+                bos.writeDouble(numeric[pos]);
+            }
+            // TODO generify!
+            bos.write(objects.length); // write numeric size first
+            if (objects.length > 0) {
+                for (int i = 0; i < objects.length; i++) {
+                    // write obj size per each object
+                    Object object = objects[i];
+                    writePrimitive(bos, object);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

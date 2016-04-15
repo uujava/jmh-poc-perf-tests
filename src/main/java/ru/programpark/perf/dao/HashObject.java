@@ -1,6 +1,6 @@
 package ru.programpark.perf.dao;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.Map;
 
 /**
@@ -9,6 +9,7 @@ import java.util.Map;
 public class HashObject implements TestObject, Serializable {
     private final Type type;
     private final Map<String, Object> data;
+
     public HashObject(Type type) {
         this.type = type;
         data = null;
@@ -51,16 +52,25 @@ public class HashObject implements TestObject, Serializable {
 
     @Override
     public long getLong(String idx) {
-        return ((Number)data.get(idx)).longValue();
+        return ((Number) data.get(idx)).longValue();
     }
 
     @Override
     public double getDouble(String idx) {
-        return ((Number)data.get(idx)).doubleValue();
+        return ((Number) data.get(idx)).doubleValue();
     }
 
     @Override
     public Type type() {
         return type;
+    }
+
+    @Override
+    public void writeSelf(DataOutputStream bos) {
+        try {
+            new ObjectOutputStream(bos).writeObject(this);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to serialize: " + this + " " + e, e);
+        }
     }
 }

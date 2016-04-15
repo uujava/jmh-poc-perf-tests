@@ -1,5 +1,7 @@
 package ru.programpark.perf.dao;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -98,5 +100,23 @@ public class FixedArrayObject implements TestObject, Serializable {
         return type;
     }
 
+    @Override
+    public void writeSelf(DataOutputStream bos) {
+        try {
+            bos.writeDouble(numeric[0]);
+            bos.writeDouble(numeric[1]);
+            bos.writeDouble(numeric[2]);
+            bos.writeDouble(numeric[3]);
+            bos.writeDouble(numeric[4]);
+            bos.writeDouble(numeric[5]);
+            bos.writeDouble(numeric[6]);
+            bos.writeDouble(numeric[7]);
+            writePrimitive(bos, objects[0]);
+            writePrimitive(bos, objects[1]);
+            writePrimitive(bos, type);
+        } catch (IOException e) {
+            throw new RuntimeException("unable to serialize: " + this + " " + e, e);
+        }
+    }
 
 }
