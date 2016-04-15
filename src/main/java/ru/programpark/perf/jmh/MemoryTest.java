@@ -13,7 +13,7 @@ import java.util.Iterator;
  * Created by kozyr on 05.04.2016.
  */
 public class MemoryTest {
-    static final String[] CLASSES = {"BasicArray", "ObjectArray", "FixedArray", "Field", "Hash"};
+    static final String[] CLASSES = {"BasicArray", "ObjectArray", "FixedArray", "Field", "Hash", "RubyObject"};
     public static final int AVERAGED_TO = 10000;
 
     public static void main(String[] args) {

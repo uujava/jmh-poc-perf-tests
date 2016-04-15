@@ -8,11 +8,14 @@ output JVM bytecode.
 
 SYNOPSIS
 -----------------
-
+    # build
     mvn clean package
-    java -jar target\benchmarks.jar -bm thrpt,sample -f 1 -i 4 -tu us -wi 3
-    or
+    # run all behnchmarks
+    java -jar target\benchmarks.jar -bm thrpt,sample -prof gc
+    #help for options
     java -jar target\benchmarks.jar -h
+    #print memory layout:
+    java -cp target\benchmarks.jar ru.programpark.perf.jmh.MemoryTest
 
 REQUIREMENTS
 -----------------

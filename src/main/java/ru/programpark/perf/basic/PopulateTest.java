@@ -105,7 +105,7 @@ public class PopulateTest {
 
     @State(Scope.Thread)
     public static class Factory{
-        @Param({"Field", "BasicArray", "FixedArray", "ObjectArray", "Hash"})
+        @Param({"Field", "BasicArray", "FixedArray", "ObjectArray", "Hash", "RubyObject"})
         public String className;
         public TestObjectFactory factory;
 

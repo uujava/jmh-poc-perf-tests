@@ -45,6 +45,43 @@
             <artifactId>fst</artifactId>
             <version>2.34</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-core</artifactId>
+            <version>1.7.4</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jnr-enxio</artifactId>
+                    <groupId>com.github.jnr</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jnr-netdb</artifactId>
+                    <groupId>com.github.jnr</groupId>
+                </exclusion>
+                <!--<exclusion>-->
+                    <!--<artifactId>jnr-posix</artifactId>-->
+                    <!--<groupId>com.github.jnr</groupId>-->
+                <!--</exclusion>-->
+                <exclusion>
+                    <artifactId>jnr-unixsocket</artifactId>
+                    <groupId>com.github.jnr</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jffi</artifactId>
+                    <groupId>com.github.jnr</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jnr-x86asm</artifactId>
+                    <groupId>com.github.jnr</groupId>
+                </exclusion>
+                <!--<exclusion>-->
+                    <!--<artifactId>jnr-ffi</artifactId>-->
+                    <!--<groupId>com.github.jnr</groupId>-->
+                <!--</exclusion>-->
+            </exclusions>
+        </dependency>
+
     </dependencies>
 
     <properties>
